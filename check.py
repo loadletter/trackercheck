@@ -7,6 +7,9 @@ from scraper import scrape
 def process_url(url, lock):
 	try:
 		scrape(url, ['25BE9FC43266847BD8271E417AF8CF048D46E5CD'])
+	except RuntimeError:
+		#something is wrong with url or tracker, ignore it
+		pass
 	except Exception:
 		if not PRINT_GOOD:
 			with lock:
@@ -17,7 +20,7 @@ def process_url(url, lock):
 				print url
 
 def main():
-	pool = ThreadPool(processes=10)
+	pool = ThreadPool(processes=40)
 	outlock = Lock()
 	for line in sys.stdin:
 		s = line.strip()
